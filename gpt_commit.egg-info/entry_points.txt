@@ -1,2 +1,0 @@
-[console_scripts]
-gpt-commit = gpt_commit.gpt_commit:main

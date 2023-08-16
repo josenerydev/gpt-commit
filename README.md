@@ -52,7 +52,14 @@ Before using the tool, you need to set up your OpenAI API key.
 
 ### On Windows (PowerShell):
 
-Run the `setupEnvironmentVariables.ps1` script:
+Before running any PowerShell script, you may need to modify the execution policy. To do this, open PowerShell as an administrator and run:
+
+```powershell
+Set-ExecutionPolicy RemoteSigned
+```
+
+Then, run the `setupEnvironmentVariables.ps1` script:
+
 ```powershell
 .\setupEnvironmentVariables.ps1 -openaiKey YOUR_OPENAI_API_KEY
 ```

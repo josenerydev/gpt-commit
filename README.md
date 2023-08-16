@@ -14,7 +14,7 @@ This project was inspired by and owes gratitude to the original work found at [m
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your_username/gpt-commit.git
+   git clone https://github.com/josenerydev/gpt-commit.git
    ```
 
 2. Navigate to the project directory:

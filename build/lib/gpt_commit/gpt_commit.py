@@ -30,9 +30,9 @@ def get_diff(ignore_whitespace=True):
             "--ignore-space-change",
             "--ignore-blank-lines",
         ]
-    diff_process = subprocess.run(arguments, capture_output=True, text=True)
+    diff_process = subprocess.run(arguments, capture_output=True, text=True, encoding='utf-8')
     diff_process.check_returncode()
-    return diff_process.stdout.strip()
+    return diff_process.stdout.strip() if diff_process.stdout else None
 
 
 def parse_diff(diff):

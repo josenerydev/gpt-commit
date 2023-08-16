@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='gpt-commit',
-    version='0.1.1',
+    version='0.1.2',
     description="A command-line tool that intelligently generates commit messages based on staged file changes in Git using OpenAI's GPT.",
     long_description=open('README.md', 'r', encoding='utf-8').read(),
     long_description_content_type='text/markdown',

@@ -129,7 +129,7 @@ def parse_args():
     return parser.parse_args()
 
 
-async def main():
+async def async_main():
     args = parse_args()
 
     try:
@@ -151,6 +151,9 @@ async def main():
     else:
         exit(commit(commit_message))
 
+def main():
+    asyncio.run(async_main())
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
+

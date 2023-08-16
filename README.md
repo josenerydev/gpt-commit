@@ -3,3 +3,5 @@ pip install -e .
 
 Dentro da pasta gpt-commit/, execute:
 pip install .
+
+pip install --upgrade .

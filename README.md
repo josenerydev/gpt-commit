@@ -2,6 +2,8 @@
 
 `gpt-commit` is a command-line tool that intelligently generates commit messages based on staged file changes in Git. It utilizes OpenAI's GPT model to craft concise and descriptive commit messages.
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 ## Acknowledgements 🙌
 This project was inspired by and owes gratitude to the original work found at [markuswt/gpt-commit](https://github.com/markuswt/gpt-commit). Thank you for laying the foundation!
 
@@ -88,3 +90,7 @@ For help on available options:
 ```bash
 gpt-commit --help
 ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -3,7 +3,6 @@
 import asyncio
 import sys
 from .git_utils import get_diff, commit
-from .diff_utils import parse_diff, assemble_diffs
 from .openai_utils import generate_commit_message
 from .cli_parser import parse_args
 

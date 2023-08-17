@@ -14,13 +14,16 @@ openai.organization = os.getenv("OPENAI_ORG_ID")
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 async def complete(prompt):
+    model_name = "gpt-3.5-turbo"
+    print(f"Using AI model: {model_name}")
     completion_resp = await openai.ChatCompletion.acreate(
-        model="gpt-3.5-turbo",
+        model=model_name,
         messages=[{"role": "user", "content": prompt[: PROMPT_CUTOFF + 100]}],
         max_tokens=128,
     )
     completion = completion_resp.choices[0].message.content.strip()
     return completion
+
 
 async def summarize_diff(diff):
     assert diff

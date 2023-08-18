@@ -53,7 +53,12 @@ async def summarize_file_changes(file_diff_summaries):
         file_name = file_diff['file_name']
         changes = file_diff['changes']
 
-        prompt = f"Summarize the changes in the file {file_name}: {changes}"
+        prompt = (f"You are a proficient code analyst and you can interpret complex changes efficiently. "
+                  f"I have a Git diff from the file {file_name} that details some code modifications: {changes}. "
+                  f"Can you provide an insightful summary of these alterations, focusing on the core components affected, "
+                  f"the objectives behind them, and possible impacts? Your concise yet comprehensive summation should "
+                  f"assist non-technical users in understanding these updates clearly.")
+
         summary = await complete(prompt)
         summaries.append({
             'file_name': file_name,
@@ -63,16 +68,18 @@ async def summarize_file_changes(file_diff_summaries):
     return summaries
 
 async def generate_single_commit_message(summaries):
-    # Convert summaries into a format that can be used in the new prompt
+    """
+    Convert summaries into a format that can be used in the new prompt
+    """
     summarized_diff = "\n".join([f"{summary['file_name']}: {summary['summary']}" for summary in summaries])
 
-    prompt = (
-        "Act as a software engineer who is analyzing the guide ["
-        + CONVENTIONAL_COMMITS
-        + "] in order to write a commit message that effectively describes the following summarized diff file ["
-        + summarized_diff
-        + "]. Your message should clearly and concisely capture the changes made, following all instructions and conventions outlined in the provided guide. Please be sure to avoid including any explanations or additional information about your process - only provide the generated commit message."
-    )
+    prompt = (f"Consider yourself as an experienced software engineer. You are well versed in using the guide "
+              f"[{CONVENTIONAL_COMMITS}] to communicate commit messages effectively and professionally. "
+              f"Your current goal is to analyze a summarized diff file provided by me, identified as "
+              f"[{summarized_diff}], and create an insightful commit message based on this analysis. "
+              f"While crafting the commit message, it's essential that you maintain good practice; ensure your commit "
+              f"title stays around 50 characters while the body and footer(s) should be wrapped at approximately 72 characters. "
+              f"Do not provide any extra explanations or additional details; just draft one sample commit message as per the given requirements.")
 
     return await complete(prompt)
 

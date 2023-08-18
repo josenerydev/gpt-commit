@@ -11,20 +11,18 @@ def read_file_content(filepath):
 
 
 def main():
-    # Directory containing the .py files
-    source_directory = os.path.join("gpt_commit")
-
     # Create a temporary file
     temp_fd, temp_path = tempfile.mkstemp(suffix=".md")
     os.close(temp_fd)  # Close the file descriptor, we'll use the path directly
 
-    # Iterate over the files in the directory and write to the temporary file
-    for filename in os.listdir(source_directory):
-        if filename.endswith(".py"):
-            filepath = os.path.join(source_directory, filename)
-            content = read_file_content(filepath)
-            with open(temp_path, "a", encoding="utf-8") as temp_file:
-                temp_file.write(f"``` {filename}\n{content}\n```\n\n")
+    # Iterate over the files in the current directory and its subdirectories
+    for dirpath, dirnames, filenames in os.walk("."):
+        for filename in filenames:
+            if filename.endswith(".py"):
+                filepath = os.path.join(dirpath, filename)
+                content = read_file_content(filepath)
+                with open(temp_path, "a", encoding="utf-8") as temp_file:
+                    temp_file.write(f"``` {filename}\n{content}\n```\n\n")
 
     print("Editing in VS Code. Close to continue.")
 

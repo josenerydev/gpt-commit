@@ -2,20 +2,22 @@
 
 import asyncio
 import sys
-from .git_utils import get_diff, commit
-from .openai_utils import generate_commit_message
+from .git_utils import get_diff, commit, extract_diff_summary
+from .openai_utils import generate_single_commit_message, summarize_file_changes
 from .cli_parser import parse_args
 
 async def async_main():
     args = parse_args()
 
     try:
-        if not get_diff(ignore_whitespace=False):
-            print(
-                "No changes staged. Use `git add` to stage files before invoking gpt-commit."
-            )
+        diff_content = get_diff(ignore_whitespace=False)
+        if not diff_content:
+            print("No changes staged. Use `git add` to stage files before invoking gpt-commit.")
             exit()
-        commit_message = await generate_commit_message(get_diff())
+
+        file_diff_summaries = extract_diff_summary(diff_content)
+        summaries = await summarize_file_changes(file_diff_summaries)
+        commit_message = await generate_single_commit_message(summaries)
     except UnicodeDecodeError:
         print("gpt-commit does not support binary files", file=sys.stderr)
         commit_message = (

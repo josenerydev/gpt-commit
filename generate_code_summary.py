@@ -1,35 +1,41 @@
 import os
+import tempfile
+import subprocess
+
 
 def read_file_content(filepath):
     """Read the content of a file."""
-    with open(filepath, 'r', encoding='utf-8') as file:
+    with open(filepath, "r", encoding="utf-8") as file:
         content = file.read()
         return content if content.strip() else "(empty)"
 
-def write_to_md(output_path, filename, content):
-    """Write the content into a .md file in the desired format."""
-    with open(output_path, 'a', encoding='utf-8') as md_file:
-        md_file.write(f"``` {filename}\n{content}\n```\n\n")
 
 def main():
     # Directory containing the .py files
     source_directory = os.path.join("gpt_commit")
-    
-    # Name of the output .md file
-    output_md = "gpt_commit_code_summary.md"
-    
-    # If the output file already exists, remove it to start fresh
-    if os.path.exists(output_md):
-        os.remove(output_md)
-    
-    # Iterate over the files in the directory
+
+    # Create a temporary file
+    temp_fd, temp_path = tempfile.mkstemp(suffix=".md")
+    os.close(temp_fd)  # Close the file descriptor, we'll use the path directly
+
+    # Iterate over the files in the directory and write to the temporary file
     for filename in os.listdir(source_directory):
         if filename.endswith(".py"):
             filepath = os.path.join(source_directory, filename)
             content = read_file_content(filepath)
-            write_to_md(output_md, filename, content)
-    
-    print(f"Content written to {output_md}")
+            with open(temp_path, "a", encoding="utf-8") as temp_file:
+                temp_file.write(f"``` {filename}\n{content}\n```\n\n")
 
-if __name__ == '__main__':
+    print("Editing in VS Code. Close to continue.")
+
+    # Open the temporary file in VS Code
+    subprocess.run(["cmd", "/c", "code", "-w", temp_path])
+    # The '-w' flag will wait until the file is closed in VS Code
+    print("Editing completed. Continuing script execution...")
+
+    # Remove the temporary file
+    os.remove(temp_path)
+
+
+if __name__ == "__main__":
     main()

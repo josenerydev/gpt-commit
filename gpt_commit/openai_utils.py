@@ -78,7 +78,7 @@ async def generate_single_commit_message(summaries):
               f"Your current goal is to analyze a summarized diff file provided by me, identified as "
               f"[{summarized_diff}], and create an insightful commit message based on this analysis. "
               f"While crafting the commit message, it's essential that you maintain good practice; ensure your commit "
-              f"title stays around 50 characters while the body and footer(s) should be wrapped at approximately 72 characters. "
+              f"title stays around 50 characters while the body and footer(s) should be wrapped at approximately 72 characters. Limit your commit message to 50 characters per line."
               f"Do not provide any extra explanations or additional details; just draft one sample commit message as per the given requirements.")
 
     return await complete(prompt)

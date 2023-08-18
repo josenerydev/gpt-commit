@@ -44,18 +44,36 @@ async def summarize_summaries(summaries):
     assert summaries
     return await complete(COMMIT_MSG_PROMPT + "\n\n" + summaries + "\n\n")
 
-async def generate_single_commit_message(diff):
-    if not diff:
-        return "Fix whitespace"
+async def summarize_file_changes(file_diff_summaries):
+    """
+    Summarize changes in each file using OpenAI.
+    """
+    summaries = []
+    for file_diff in file_diff_summaries:
+        file_name = file_diff['file_name']
+        changes = file_diff['changes']
+
+        prompt = f"Summarize the changes in the file {file_name}: {changes}"
+        summary = await complete(prompt)
+        summaries.append({
+            'file_name': file_name,
+            'summary': summary
+        })
+
+    return summaries
+
+async def generate_single_commit_message(summaries):
+    # Convert summaries into a format that can be used in the new prompt
+    summarized_diff = "\n".join([f"{summary['file_name']}: {summary['summary']}" for summary in summaries])
+
     prompt = (
         "Act as a software engineer who is analyzing the guide ["
         + CONVENTIONAL_COMMITS
-        + "] in order to write a commit message that effectively describes this diff file ["
-        + diff
+        + "] in order to write a commit message that effectively describes the following summarized diff file ["
+        + summarized_diff
         + "]. Your message should clearly and concisely capture the changes made, following all instructions and conventions outlined in the provided guide. Please be sure to avoid including any explanations or additional information about your process - only provide the generated commit message."
     )
-    
-    # Chamamos a API com o novo prompt
+
     return await complete(prompt)
 
 async def generate_commit_message(diff):
